@@ -16,7 +16,7 @@ router.get('/', (req, res, next) => {
     hasProducts: products.length > 0,
     activeShop: true,
     productCSS: true
-  });
+  });     
 });
 
-module.exports = router;
+module.exports = router;  
