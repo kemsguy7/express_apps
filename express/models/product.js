@@ -26,6 +26,17 @@ module.exports = class Product {
   }
 
   static fetchAll() {
+    const p = path.join(
+      path.dirname(process.mainModule.filename),
+      'data',
+      'products.json'
+    )
+    fs.readFile(p, (err, fileContent) => {
+      if (err) {
+        return []
+      } //no need for else block becasue after return the function will stop
+      return JSON.parse(fileContent)
+    })
     return products
   }
 }
