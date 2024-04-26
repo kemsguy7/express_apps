@@ -2,22 +2,33 @@ const path = require('path')
 const fs = require('fs')
 const products = []
 
+const getProductFromFile = (cb) => {
+  //using a callback to display the results
+  const p = path.join(
+    path.dirname(process.mainModule.filename),
+    'data',
+    'products.json'
+  )
+  fs.readFile(p, (err, fileContent) => {
+    if (err) {
+      cb([])
+    } else {
+      cb(JSON.parse(fileContent))
+    }
+  })
+  return products
+}
+
 module.exports = class Product {
   constructor(t) {
     this.title = t
   }
 
   save() {
-    const p = path.join(
-      path.dirname(process.mainModule.filename),
-      'data',
-      'products.json'
-    )
+    getProductsFromFile()
     fs.readFile(p, (err, fileContent) => {
       let products = []
-      if (!err) {
-        products = JSON.parse(fileContent)
-      }
+
       products.push(this)
       fs.writeFile(p, JSON.stringify(products), (err) => {
         console.log(err)
@@ -25,18 +36,7 @@ module.exports = class Product {
     })
   }
 
-  static fetchAll() {
-    const p = path.join(
-      path.dirname(process.mainModule.filename),
-      'data',
-      'products.json'
-    )
-    fs.readFile(p, (err, fileContent) => {
-      if (err) {
-        return []
-      } //no need for else block becasue after return the function will stop
-      return JSON.parse(fileContent)
-    })
-    return products
+  static fetchAll(cb) {
+    getProductsFromFile(cb)
   }
 }
