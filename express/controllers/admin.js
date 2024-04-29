@@ -19,7 +19,7 @@ exports.postAddProduct = (req, res, next) => {
 };
 
 exports.getEditProduct = (req, res, next) => {
-  const editMode = req.query.edit;  //this is a query parameter that gets a query string of "edit"
+  const editMode = req.query.edit;  //this is a query parameter that gets a query string of "edit", edit will be equal to true                                                                                  
   if (!editMode) {
     res.redirect('/');
   }
@@ -34,8 +34,7 @@ exports.getEditProduct = (req, res, next) => {
       editing: editMode,
       product: product //pass product on a product key 
     });
-  });
-  
+  }); 
 };
 
 exports.getProducts = (req, res, next) => {
