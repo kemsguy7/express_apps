@@ -23,24 +23,28 @@ module.exports = class Product {
     this.title = title;
     this.imageUrl = imageUrl;
     this.description = description;
-    this.price = price;
+    this.price = price; 
   }
 
   save() {
-    getProductsFromFile(products => {
-      if (this.id) {
+    getProductsFromFile(products => {  
+      if (this.id) {  //editing functionaality if an id exists in the request
         const existingProductIndex = products.findIndex(prod => prod.id === this.id);
         const updatedProducts = [...products];
         updatedProducts[existingProductIndex] = this;
+        fs.writeFile(p, JSON.stringify(products), err => {
+          console.log(err);
+        });
+      } else { // Add functionality that cre ates new products
+        this.id = Math.floor(Math.random().toString()); 
+        products.push(this);
+        fs.writeFile(p, JSON.stringify(products), err => {
+          console.log(err);
+        });
       }
-      this.id = Math.floor(Math.random().toString()); 
-      products.push(this);
-      fs.writeFile(p, JSON.stringify(products), err => {
-        console.log(err);
-      });
     });
   }
-
+  
   static fetchAll(cb) {
     getProductsFromFile(cb);
   }
