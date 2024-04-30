@@ -38,7 +38,7 @@ exports.getEditProduct = (req, res, next) => {
 
 
 exports.postEditProduct = (req, res, next) => {
- const prodId = req.body.productId; //productId is the name of the input field in the form
+ const prodId = req.body.productId; //productId is the name of the hidden  input field in the form
  const updatedTitle = req.body.title;
  const updatedPrice = req.body.price; 
  const updatedImageUrl = req.body.imageUrl; 
@@ -50,7 +50,8 @@ exports.postEditProduct = (req, res, next) => {
     updatedDesc, 
     updatedPrice
   );
-  updatedProduct.save(); 
+  updatedProduct.save();
+  res.redirect('/admin/products'); 
 };
 
 exports.getProducts = (req, res, next) => {
