@@ -36,9 +36,22 @@ exports.getEditProduct = (req, res, next) => {
   }); 
 };
 
+
 exports.postEditProduct = (req, res, next) => {
-  
-}
+ const prodId = req.body.productId; //productId is the name of the input field in the form
+ const updatedTitle = req.body.title;
+ const updatedPrice = req.body.price; 
+ const updatedImageUrl = req.body.imageUrl; 
+ const updatedDesc = req.body.description; 
+ const updatedProduct = new Product(
+    prodId, 
+    updatedTitle,
+    updatedImageUrl, 
+    updatedDesc, 
+    updatedPrice
+  );
+  updatedProduct.save(); 
+};
 
 exports.getProducts = (req, res, next) => {
   Product.fetchAll(products => {
