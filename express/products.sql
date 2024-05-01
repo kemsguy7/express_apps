@@ -6,3 +6,4 @@ CREATE TABLE `products` (
     `imageUrl` VARCHAR(255) NOT NULL,
     PRIMARY KEY (`id`)
 );
+
