@@ -3,7 +3,8 @@ const Product = require('../models/product');
 exports.getAddProduct = (req, res, next) => {
   res.render('admin/edit-product', {
     pageTitle: 'Add Product',
-    path: '/admin/add-product', 
+    path: '/admin/add-product',
+    editing: false
   });
 };
 
@@ -18,9 +19,9 @@ exports.postAddProduct = (req, res, next) => {
 };
 
 exports.getEditProduct = (req, res, next) => {
-  const editMode = req.query.edit;  //this is a query parameter that gets a query string of "edit", edit will be equal to true                                                                                  
+  const editMode = req.query.edit;
   if (!editMode) {
-    res.redirect('/');
+    return res.redirect('/');
   }
   const prodId = req.params.productId;
   Product.findById(prodId, product => {
@@ -29,51 +30,42 @@ exports.getEditProduct = (req, res, next) => {
     }
     res.render('admin/edit-product', {
       pageTitle: 'Edit Product',
-      path: '/admin/edit-product', 
+      path: '/admin/edit-product',
       editing: editMode,
-      product: product //pass product on a product key 
+      product: product
     });
-  }); 
+  });
 };
 
-
 exports.postEditProduct = (req, res, next) => {
-
-const testObj = {};
- const prodId = req.body.productId; //productId is the name of the hidden  input field in the form
- 
- const updatedTitle = req.body.title;
- const updatedPrice = req.body.price; 
- const updatedImageUrl = req.body.imageUrl; 
- const updatedDesc = req.body.description; 
- const updatedProduct = new Product(
-    prodId, 
+  const prodId = req.body.productId;
+  const updatedTitle = req.body.title;
+  const updatedPrice = req.body.price;
+  const updatedImageUrl = req.body.imageUrl;
+  const updatedDesc = req.body.description;
+  const updatedProduct = new Product(
+    prodId,
     updatedTitle,
-    updatedImageUrl, 
-    updatedDesc, 
+    updatedImageUrl,
+    updatedDesc,
     updatedPrice
   );
-  testObj.id = prodId;
-  testObj.updatedProduct = updatedProduct;
-  console.log(testObj);
-
   updatedProduct.save();
-  res.redirect('/admin/products'); 
+  res.redirect('/admin/products');
 };
 
 exports.getProducts = (req, res, next) => {
   Product.fetchAll(products => {
     res.render('admin/products', {
-      prods: products, 
+      prods: products,
       pageTitle: 'Admin Products',
       path: '/admin/products'
     });
   });
 };
 
- 
 exports.postDeleteProduct = (req, res, next) => {
-  const prodId = req.body.productId; // extract the productId from the form REQUEST BOSY
-  Product.deleteById(prodId); // call the deleteById method from
-  res.redirect('/admin/products');   
-}
+  const prodId = req.body.productId;
+  Product.deleteById(prodId);
+  res.redirect('/admin/products');
+};
