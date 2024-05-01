@@ -45,6 +45,9 @@ module.exports = class Cart {
       }
       const updatedCart = { ...JSON.parse(fileContent) };
       const product = updatedCart.products.find(prod => prod.id === id); 
+      if(!product) { //check if  a give product is in the cart
+        return;
+      } 
       const productQty = product.qty; 
       updatedCart.products = updatedCart.products.filter(
         prod => prod.id !== id)
@@ -55,7 +58,7 @@ module.exports = class Cart {
         console.log(err);
       }); 
     });
-      cart.totalPrice = productPrice; 
+       
   }
 
   static getCart(cb) {
