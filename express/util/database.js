@@ -44,7 +44,7 @@ const dbPath = path.join(__dirname, 'data', 'database.sqlite');
 const sequelize = new Sequelize({
   dialect: 'sqlite',
   storage: dbPath,
-  logging: console.log // Log SQL queries to the console
+ // logging: console.log // Log SQL queries to the console
 });
 
 module.exports = sequelize;
