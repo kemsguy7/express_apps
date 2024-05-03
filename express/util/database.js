@@ -21,15 +21,30 @@
 // module.exports = sequelize; //export the connection to the database
 
 
-const { Sequelize } = require('sequelize');
+// const { Sequelize } = require('sequelize');
 
-const sequelize = new Sequelize('node', 'root', '', {
-    host: 'localhost',
-    dialect: 'mysql',
-    port: 3306,
-    logging: console.log
+// const sequelize = new Sequelize('node', 'root', '', {
+//     host: 'localhost',
+//     dialect: 'mysql',
+//     port: 4306,
+//     logging: console.log
+// });
+
+
+// module.exports = sequelize;
+
+
+const { Sequelize } = require('sequelize');
+const path = require('path');
+
+// Define the path to the SQLite file
+const dbPath = path.join(__dirname, 'data', 'database.sqlite');
+
+// Create a Sequelize instance for SQLite
+const sequelize = new Sequelize({
+  dialect: 'sqlite',
+  storage: dbPath,
+  logging: console.log // Log SQL queries to the console
 });
 
-
 module.exports = sequelize;
-
