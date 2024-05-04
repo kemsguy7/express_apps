@@ -13,7 +13,7 @@ exports.postAddProduct = (req, res, next) => {
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const description = req.body.description;
-  req.user.createProduct({ //sequelize method to create a new product
+  req.user.createProduct({ //sequelize method to create a new product, this automatically creates a product with the user id
     title: title,
     price : price, 
     imageUrl: imageUrl, 
