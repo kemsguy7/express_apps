@@ -38,7 +38,8 @@ exports.getEditProduct = (req, res, next) => {
   // Product.findByPk(prodId)
   
   req.user.getProducts({ where: { id: prodId } })// associate a product to the user that created it
-    .then(product => {
+    .then(products => {
+      const product = products[0];
     if (!product) {
       return res.redirect('/');
     }
@@ -86,6 +87,8 @@ exports.postEditProduct = (req, res, next) => {
 
 exports.getProducts = (req, res, next) => {
   Product.findAll()
+  req.user
+  .getProducts()
   .then(products => {
     res.render('admin/products', {
       prods: products,
