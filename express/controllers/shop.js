@@ -94,12 +94,25 @@ exports.getCart = (req, res, next) => {
 
 exports.postCart = (req, res, next) => {
   req.prodId = req.body.productId;
+  let fetchedCart;
   req.user
   .getCart() //get access to the cart
   .then(cart => {
+    fetchedCart = cart; //  
     return cart.getProducts({ where: { id: prodId } });
   })
-  
+  .then(products => {
+    let product; 
+    if (products.length > 0) {
+      product = products[0]; //get the first product 
+    } 
+    return Product.findByPk(prodId)
+      .then(product => {
+        return fetchedCart.addProduct(product, {});
+      })
+      .catch(err => console.log(err));
+  })
+  .catch(err => console.log(err));
 };
 
 exports.postCartDeleteProduct = (req, res, next) => {
