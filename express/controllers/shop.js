@@ -75,11 +75,13 @@ exports.getCart = (req, res, next) => {
 };
 
 exports.postCart = (req, res, next) => {
-  const prodId = req.body.productId;
-  Product.findById(prodId, product => {
-    Cart.addProduct(prodId, product.price);
-  });
-  res.redirect('/cart');
+  req.prodId = req.body.productId;
+  req.user
+  .getCart() //get access to the cart
+  .then(cart => {
+    return cart.getProducts({ where: { id: prodId } });
+  })
+  
 };
 
 exports.postCartDeleteProduct = (req, res, next) => {
