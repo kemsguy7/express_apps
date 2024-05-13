@@ -69,7 +69,7 @@ exports.getCart = (req, res, next) => {
     })
     .catch(err => console.log(err));
   })
-  .catch(err => console,log(err));
+  .catch(err => console.log(err));
 
 
   // Cart.getCart(cart => {
@@ -93,7 +93,7 @@ exports.getCart = (req, res, next) => {
 };
 
 exports.postCart = (req, res, next) => {
-  req.prodId = req.body.productId;
+  let prodId = req.body.productId;
   let fetchedCart;
   req.user
   .getCart() //get access to the cart
@@ -106,11 +106,20 @@ exports.postCart = (req, res, next) => {
     if (products.length > 0) {
       product = products[0]; //get the first product 
     } 
-    return Product.findByPk(prodId)
+    let newQuantity = 1;
+    if (product) {
+
+    }
+    return Product.findByPk(prodId) //add a new product for the first time, quantity will be equal to value of the newQuantity valriable which == 1
       .then(product => {
-        return fetchedCart.addProduct(product, {});
+        return fetchedCart.addProduct(product, 
+          {through : {quantity: newQuantity}}); //magic method added by sequelize
       })
       .catch(err => console.log(err));
+  })
+  .then(() => {
+    res.redirect('/cart');  //redirect to the the cart page 
+  
   })
   .catch(err => console.log(err));
 };
