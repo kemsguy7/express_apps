@@ -55,16 +55,15 @@ exports.getIndex = (req, res, next) => {
 
 exports.getCart = (req, res, next) => { 
   //creating cart with sequelize
-  
   req.user //use this to get the cart associated with a particular user 
   .getCart()
   .then(cart => {
     return cart.getProducts()
     .then(products => {
-      res.render('shop.cart',{
+      res.render('shop/cart',{
         path: '/cart',
         pageTitle: 'Your Cart',
-        products: cartProducts
+        products: products
       })
     })
     .catch(err => console.log(err));
@@ -95,31 +94,34 @@ exports.getCart = (req, res, next) => {
 exports.postCart = (req, res, next) => {
   let prodId = req.body.productId;
   let fetchedCart;
+  let newQuantity = 1;
   req.user
   .getCart() //get access to the cart
   .then(cart => {
     fetchedCart = cart; //  
     return cart.getProducts({ where: { id: prodId } });
   })
-  .then(products => {
+  .then(products => { 
     let product; 
     if (products.length > 0) {
       product = products[0]; //get the first product 
     } 
     let newQuantity = 1;
-    if (product) {
-
+    if (product) { //Add an existing item to the cart
+      const oldQuantity = product.cartItem.quantity;       //first get the old quantity 
+      newQuantity = oldQuantity + 1; //get the new quantity
+      return product;
     }
     return Product.findByPk(prodId) //add a new product for the first time, quantity will be equal to value of the newQuantity valriable which == 1
-      .then(product => {
-        return fetchedCart.addProduct(product, 
-          {through : {quantity: newQuantity}}); //magic method added by sequelize
-      })
-      .catch(err => console.log(err));
+      
+  })
+  .then(data => {
+    return fetchedCart.addProduct(product, {
+      through: { quantity: newQuantity}
+    })  
   })
   .then(() => {
     res.redirect('/cart');  //redirect to the the cart page 
-  
   })
   .catch(err => console.log(err));
 };
