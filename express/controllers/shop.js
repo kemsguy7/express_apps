@@ -26,7 +26,7 @@ exports.getProduct = (req, res, next) => {
   //     });
   //   })
   //   .catch(err => console.log(err));
-  Product.findById(prodId)
+  Product.findByPk(prodId)
     .then(product => {
       res.render('shop/product-detail', {
         product: product,
@@ -90,7 +90,7 @@ exports.postCart = (req, res, next) => {
         newQuantity = oldQuantity + 1; //get the new quantity
         return product;
       }
-      return Product.findById(prodId); //add a new product for the first time, quantity will be equal to value of the newQuantity valriable which == 1
+      return Product.findByPk(prodId); //add a new product for the first time, quantity will be equal to value of the newQuantity valriable which == 1
     })
     .then(product => {
       return fetchedCart.addProduct(product, {
@@ -105,7 +105,7 @@ exports.postCart = (req, res, next) => {
 
 exports.postCartDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  Product.findById(prodId, product => {
+  Product.findByPk(prodId, product => {
     Cart.deleteProduct(prodId, product.price);
     res.redirect('/cart'); 
   });
