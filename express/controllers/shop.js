@@ -47,7 +47,7 @@ exports.getIndex = (req, res, next) => {
       });
     })
     .catch(err => {
-      console.log(err);
+      console.log(err);  
     });
 };
 
@@ -122,7 +122,28 @@ exports.postCartDeleteProduct = (req, res, next) => {
   });
 };
 
-exports.postOrder = (req, res, next) => {};
+exports.postOrder = (req, res, next) => { //function to create an order
+  req.user
+    .getCart()
+    .then(cart => {
+      return cart.getProducts();
+    }).then(products => {
+      return req.user
+        .createOrder()
+        .then(order => {
+          order.addProducts(
+            products.map(product => { //each product need to have a special key or field which is understood by sequelize
+              product.orderItem = { quantity : product.cartItem.quantity }; ///gotten from the model definition 
+              return product; 
+          })
+          );
+        })
+        .catch(err => console.log(err));
+    }).then(result => {
+      res.redirect('/orders');
+    })
+    .catch(err => console.log(err));
+};  
 
 exports.getOrders = (req, res, next) => {
   res.render('shop/orders', {
