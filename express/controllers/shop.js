@@ -123,9 +123,11 @@ exports.postCartDeleteProduct = (req, res, next) => {
 };
 
 exports.postOrder = (req, res, next) => { //function to create an order
+  let fetchedCart; //store the cart in a new variable
   req.user
     .getCart()
     .then(cart => {
+      fetchedCart = cart;  // assigning the empty cart variable above to the cart 
       return cart.getProducts();
     }).then(products => {
       return req.user
@@ -140,16 +142,26 @@ exports.postOrder = (req, res, next) => { //function to create an order
         })
         .catch(err => console.log(err));
     }).then(result => {
+      return fetchedCart.setProducts(null);
+    }).then(result => {
       res.redirect('/orders');
     })
-    .catch(err => console.log(err));
+    .catch(err => console.log(err)); 
 };  
 
+
 exports.getOrders = (req, res, next) => {
-  res.render('shop/orders', {
-    path: '/orders',
-    pageTitle: 'Your Orders'
-  });
+  req.user
+    .getOrders({include : ['products']}) // if you're fetching all the orders, also fetch all related products   in app.js we relate order to products, in the model we associate sequelize to a (product) sequelize pluralizes it to "products"
+    .then(orders => {
+      res.render('shop/orders', {
+        path: '/orders',
+        pageTitle: 'Your Orders',
+        orders: orders //passing this variable to be used by ejs on the frontend 
+      });
+    })
+    .catch(err => console.log(err));
+  
 };
 
 exports.getCheckout = (req, res, next) => {
