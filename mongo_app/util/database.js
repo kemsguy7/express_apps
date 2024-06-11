@@ -1,8 +1,6 @@
-const Sequelize = require('sequelize');
+const mongodb = require('mongodb');
 
-const sequelize = new Sequelize('node-complete', 'root', 'nodecomplete', {
-  dialect: 'mysql',
-  host: 'localhost'
-});
+const MongoClient = mongodb.MongoClient; // This is a constructor function that we can use to create a new client
 
-module.exports = sequelize;
+
+MongoClient.connect('mongodb+srv://mattidungafa:zwLBWV7NRxwq2W2l@cluster0.grapefc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
