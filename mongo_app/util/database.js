@@ -6,7 +6,7 @@ let _db //define an empty variable to store the database connection
 const mongoConnect = (callback) => {
   MongoClient.connect() //add mongodb url here
     .then((client) => {
-      console.log('Connected!')
+      console.log('Database Connected Successful!')
       _db = client.db()
       callback(client)
     })
