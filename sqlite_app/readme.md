@@ -1,4 +1,4 @@
-This is an ecommerce project built with expressJs and sqlite database
+This is a bare ecommerce project built with expressJs and sqlite database
 
 To run the project, on your terminal, run `npm install` then `npm start` 
 
