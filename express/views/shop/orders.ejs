@@ -11,7 +11,7 @@
                     <% orders.forEach(order => { %>
                         <li> 
                             <h1># <%= order.id %> </h1>
-                            <ul> 
+                            <ul>    
                                 <% order.products.forEach(product => { %> 
                                     <li><%= product.title %> (<%= product.orderItem.quantity %>) </li>
                                 <% }); %>
