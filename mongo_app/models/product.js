@@ -21,11 +21,25 @@ class Product {
       })
   }
 
+  static fetchAll() {
+    return db
+      .collection('products')
+      .find()
+      .toArray()
+      .then((products) => {
+        console.log(products)
+        return products
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
   static findById(prodId) {
     const db = getDb()
     return db
       .collection('products')
-      .find({ _id: new mongodb.ObjectId(prodId) })
+      .find({ _id: prodId })
       .next()
       .then((product) => {
         console.log(product)
