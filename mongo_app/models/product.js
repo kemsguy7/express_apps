@@ -1,3 +1,4 @@
+const mongoDb = require('mongodb')
 const getDb = require('../util/database').getDb
 
 class Product {
@@ -10,6 +11,7 @@ class Product {
 
   save() {
     const db = getDb()
+
     return db
       .collection('products') // Ensure to return the promise
       .insertOne(this)
@@ -22,6 +24,8 @@ class Product {
   }
 
   static fetchAll() {
+    const db = getDb()
+
     return db
       .collection('products')
       .find()
@@ -36,10 +40,10 @@ class Product {
   }
 
   static findById(prodId) {
-    const db = getDb()
+    const db = getDb() //get access to the database connection
     return db
       .collection('products')
-      .find({ _id: prodId })
+      .find({ _id: new mongoDb.ObjectId(prodId) }) //using mongoDb's ObjectID method to find the product
       .next()
       .then((product) => {
         console.log(product)
