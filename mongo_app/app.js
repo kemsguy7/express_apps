@@ -5,6 +5,7 @@ const errorController = require('./controllers/error')
 
 // Destructure the named export mongoConnect
 const { mongoConnect } = require('./util/database')
+const User = require('./models/user')
 
 const app = express()
 
@@ -18,12 +19,12 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.use((req, res, next) => {
-  // User.findById(1)
-  //   .then(user => {
-  //     req.user = user;
-  //     next();
-  //   })
-  //   .catch(err => console.log(err));
+  User.findById(1)
+    .then((user) => {
+      req.user = user
+      next()
+    })
+    .catch((err) => console.log(err))
   next()
 })
 
